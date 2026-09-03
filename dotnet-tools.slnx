@@ -13,6 +13,7 @@
   </Folder>
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
+    <Project Path="src/dotnet-svg-icons/dotnet-svg-icons.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <File Path="tests/Directory.Build.props" />
