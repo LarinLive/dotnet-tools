@@ -1,0 +1,41 @@
+<Project>
+	<!-- Compiler settings -->
+	<PropertyGroup>
+		<LangVersion>14.0</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
+	    <Nullable>enable</Nullable>
+		<Deterministic>true</Deterministic>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<FileAlignment>4096</FileAlignment>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<!-- Version info -->
+	<PropertyGroup>
+	    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+	    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<Authors>Anton Larin</Authors>
+		<Company>Anton Larin</Company>
+		<Product>My product</Product>
+		<Title>My product</Title>
+		<Copyright>© Anton Larin, 2026. All rights reserved.</Copyright>
+		<NeutralLanguage>en</NeutralLanguage>
+	</PropertyGroup>
+
+	<!-- Separate build artifacts -->
+	<PropertyGroup>
+		<UseArtifactsOutput>true</UseArtifactsOutput>
+		<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+	</PropertyGroup>
+
+	<!-- Use Nerdbank.GitVersioning -->
+	<ItemGroup>
+		<PackageReference 
+			Include="Nerdbank.GitVersioning"
+			Version="3.10.94"
+			PrivateAssets="all"
+			Condition="!Exists('packages.config')" />
+	</ItemGroup>
+</Project>
