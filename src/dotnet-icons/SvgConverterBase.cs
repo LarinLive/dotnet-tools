@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace LarinLive.DotnetTools.SvgIcons;
+namespace LarinLive.DotnetTools.Icons;
 
 public abstract class ImageDefBase
 {

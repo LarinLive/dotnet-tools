@@ -7,7 +7,7 @@
     <File Path=".github/dependabot.yml" />
   </Folder>
   <Folder Name="/.github/workflows/">
-    <File Path=".github/workflows/cd_main_nuget_dotnet-svg-icons.yml" />
+    <File Path=".github/workflows/cd_main_nuget_dotnet-icons.yml" />
     <File Path=".github/workflows/ci_main.yml" />
   </Folder>
   <Folder Name="/.root/">
@@ -20,7 +20,7 @@
   </Folder>
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
-    <Project Path="src/dotnet-svg-icons/dotnet-svg-icons.csproj" />
+    <Project Path="src/dotnet-icons/dotnet-icons.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <File Path="tests/Directory.Build.props" />

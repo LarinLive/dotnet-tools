@@ -18,8 +18,8 @@
 	    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<Authors>Anton Larin</Authors>
 		<Company>Anton Larin</Company>
-		<Product>My product</Product>
-		<Title>My product</Title>
+		<Product>Dotnet Tools</Product>
+		<Title>Dotnet Tools</Title>
 		<Copyright>© Anton Larin, 2026. All rights reserved.</Copyright>
 		<NeutralLanguage>en</NeutralLanguage>
 	</PropertyGroup>

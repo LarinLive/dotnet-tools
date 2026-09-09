@@ -2,10 +2,11 @@ using System;
 using System.CommandLine;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LarinLive.DotnetTools.SvgIcons;
+namespace LarinLive.DotnetTools.Icons;
 
 public enum IconPlatform
 {
@@ -23,9 +24,13 @@ class Program
     
     static async Task<int> Main(string[] args)
     {
-		var rootCommand = new RootCommand("Platform-specific icon management tool for .NET ecosystem.");
+		var productDescription = Assembly.GetEntryAssembly()?
+			.GetCustomAttribute<AssemblyProductAttribute>()?
+			.Product?
+			.ToString();
+		var rootCommand = new RootCommand(productDescription!);
 
-		var convertCommand = new Command("convert", "Converts an SVG image to an application icon file for the specified platform.");
+		var convertCommand = new Command("convert-svg", "Converts an SVG image to an application icon file for the specified platform.");
 
 		_inFileArgument = new("inFile")
         {
@@ -85,21 +90,25 @@ class Program
 
         if (platform == IconPlatform.MacOS)
         {
-			Console.WriteLine($"Converting '{inFile}' to '{outFile}' for Windows");
+			Console.WriteLine("Converting an SVG file to a MacOS ICNS file");
+			Console.WriteLine($"{inFile} -> {outFile}");
 			using var source = File.OpenRead(inFile);
 			using var converter = new SvgToIcnsConverter(source);
 			using var destination = File.Create(outFile);
 			converter.ConvertTo(destination);
+			Console.WriteLine("Conversion completed.");
 			return 0;
         }
         else if (platform == IconPlatform.Windows)
         {
-			Console.WriteLine($"Converting '{inFile}' to '{outFile}' for MacOS");
+			Console.WriteLine("Converting an SVG file to a Windows ICO file");
+			Console.WriteLine($"{inFile} -> {outFile}");
 			using var source = File.OpenRead(inFile);
 			using var converter = new SvgToIcoConverter(source);
 			using var destination = File.Create(outFile);
 			converter.ConvertTo(destination);
-            return 0;
+			Console.WriteLine("Conversion completed.");
+			return 0;
         }
         else
             return 1;

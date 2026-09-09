@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace LarinLive.DotnetTools.SvgIcons;
+namespace LarinLive.DotnetTools.Icons;
 
 public sealed class MacOsIconImageDef : ImageDefBase
 {
