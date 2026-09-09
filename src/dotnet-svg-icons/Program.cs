@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.CommandLine;
-using System.CommandLine.Parsing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using IconTooling;
 
-namespace scl;
+namespace LarinLive.DotnetTools.SvgIcons;
 
 public enum IconPlatform
 {
@@ -22,13 +21,13 @@ class Program
     
     private static Option<string> _platformOption = default!;
     
-    private static Option<string> _macOsDarkInFileOption = default!;
-
     static async Task<int> Main(string[] args)
     {
-        RootCommand rootCommand = new("Platform-specific icon generator tool for .NET ecosystem.");
+		var rootCommand = new RootCommand("Platform-specific icon tool for .NET ecosystem.");
 
-        _inFileArgument = new("inFile")
+		var convertCommand = new Command("convert", "Converts an SVG image to an application icon file for the specified platform.");
+
+		_inFileArgument = new("inFile")
         {
             Description = "A source SVG file.",
             Arity = ArgumentArity.ExactlyOne
@@ -60,46 +59,46 @@ class Program
                 result.AddError($"Platform value must be one of: 'MacOS', 'Windows'.");
         });
 
-       _macOsDarkInFileOption = new("--macos-dark-infile")
-        {
-            Description = "A source SVG file for MacOS dark icons.",
-            Arity = ArgumentArity.ZeroOrOne
-        };
- 
-        rootCommand.Arguments.Add(_inFileArgument);
-        rootCommand.Arguments.Add(_outFileArgument);
-        rootCommand.Options.Add(_platformOption);
-        rootCommand.Options.Add(_macOsDarkInFileOption);
-        rootCommand.SetAction(Convert);
+        convertCommand.Arguments.Add(_inFileArgument);
+        convertCommand.Arguments.Add(_outFileArgument);
+        convertCommand.Options.Add(_platformOption);
+        convertCommand.SetAction(Convert);
 
-        var parseResult = rootCommand.Parse(args);
-        return await parseResult.InvokeAsync();
+		rootCommand.Subcommands.Add(convertCommand);
+
+		return await rootCommand.Parse(args).InvokeAsync();
     }
 
 
-    static async Task<int> Convert(ParseResult parseResult, CancellationToken cancellationToken) 
+    private static async Task<int> Convert(ParseResult parseResult, CancellationToken cancellationToken) 
     {
         var inFile = parseResult.GetValue(_inFileArgument)!;
         var outFile = parseResult.GetValue(_outFileArgument)!;
+		var platformOptionValue = parseResult.GetValue(_platformOption)!.ToLowerInvariant();
 
-        var platformOptionValue = parseResult.GetValue(_platformOption)!.ToLowerInvariant();
-
-        IconPlatform platform = platformOptionValue switch
+        var platform = platformOptionValue switch
         {
             "macos" => IconPlatform.MacOS,
             "windows" => IconPlatform.Windows,
-            _ => throw new ArgumentOutOfRangeException(nameof(platformOptionValue), platformOptionValue, "Invalid platform value.")
+			_ => throw new InvalidOperationException($"Invalid platform value '{platformOptionValue}'.")
         };
 
         if (platform == IconPlatform.MacOS)
         {
-            var macOsDarkInFile = parseResult.GetValue(_macOsDarkInFileOption);
-            new SvgToIcnsConverter().ConvertFile(inFile, macOsDarkInFile, outFile);
-            return 0;
+			Console.WriteLine($"Converting '{inFile}' to '{outFile}' for Windows");
+			using var source = File.OpenRead(inFile);
+			using var converter = new SvgToIcnsConverter(source);
+			using var destination = File.Create(outFile);
+			converter.ConvertTo(destination);
+			return 0;
         }
         else if (platform == IconPlatform.Windows)
         {
-            new SvgToIcoConverter().ConvertFile(inFile, outFile);
+			Console.WriteLine($"Converting '{inFile}' to '{outFile}' for MacOS");
+			using var source = File.OpenRead(inFile);
+			using var converter = new SvgToIcoConverter(source);
+			using var destination = File.Create(outFile);
+			converter.ConvertTo(destination);
             return 0;
         }
         else
