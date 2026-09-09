@@ -23,7 +23,7 @@ class Program
     
     static async Task<int> Main(string[] args)
     {
-		var rootCommand = new RootCommand("Platform-specific icon tool for .NET ecosystem.");
+		var rootCommand = new RootCommand("Platform-specific icon management tool for .NET ecosystem.");
 
 		var convertCommand = new Command("convert", "Converts an SVG image to an application icon file for the specified platform.");
 

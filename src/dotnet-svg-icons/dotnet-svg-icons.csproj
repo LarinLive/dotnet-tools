@@ -19,13 +19,17 @@
 		<PackageProjectUrl>https://github.com/LarinLive/dotnet-tools</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/LarinLive/dotnet-tools</RepositoryUrl>
-		<Description>The P/Invoke interfaces for the Windows API.</Description>
+		<Description>Platform-specific icon management tool for .NET ecosystem.</Description>
 		<NoWin32Manifest>true</NoWin32Manifest>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<None Include="$(SolutionDir)LICENSE" Pack="true" Visible="false" PackagePath="" />
+		<None Include="$(SolutionDir)README.md" Pack="true" Visible="false" PackagePath="" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401">
@@ -35,11 +39,6 @@
 		<PackageReference Include="SkiaSharp" Version="4.152.0" />
 		<PackageReference Include="Svg.Skia" Version="5.2.3" />
 		<PackageReference Include="System.CommandLine" Version="2.0.12" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Properties\" />
 	</ItemGroup>
 
 </Project>
