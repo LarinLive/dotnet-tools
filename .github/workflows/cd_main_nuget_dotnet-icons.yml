@@ -23,9 +23,11 @@ jobs:
 
     # build the package
     - name: Build
-      run: dotnet build --configuration release /p:GeneratePackageOnBuild=true /p:PublicRelease=true
+      run: dotnet build --configuration release
     - name: Test
       run: dotnet test --no-build --configuration release --verbosity normal
+    - name: Pack
+      run: dotnet pack --configuration release --property:PublicRelease=true
 
     # get a short-lived NuGet API key
     - name: NuGet login (OIDC → temp API key)
