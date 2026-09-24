@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "dotnet-icons": {
+      "commandName": "Project",
+      "commandLineArgs": "convert \"c:\\Temp\\2\\q.svg\" \"c:\\Temp\\2\\q.ios.png\" -f ios-png-set"
+    }
+  }
+}

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LarinLive.DotnetTools.Icons;
 
-public sealed class WindowsIconImageDef : ImageDefBase { }
+public sealed class WindowsIconImageDef : PngImageDefBase { }
 
 /// <summary>
 /// Converts an SVG image into a Windows ICO file containing every standard icon resolution (16x16 through 256x256), using PNG-compressed entries.

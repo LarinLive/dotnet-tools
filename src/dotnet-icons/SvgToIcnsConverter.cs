@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LarinLive.DotnetTools.Icons;
 
-public sealed class MacOsIconImageDef : ImageDefBase
+public sealed class MacOsIconImageDef : PngImageDefBase
 {
 	public MacOsIconImageDef(string type, int sizeInPixels)
 	{

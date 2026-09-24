@@ -6,9 +6,13 @@ using System.IO;
 
 namespace LarinLive.DotnetTools.Icons;
 
-public abstract class ImageDefBase
+public abstract class PngImageDefBase
 {
 	public int SizeInPixels { get; init; }
+
+	public SKColorType ColorType { get; init; } = SKColorType.Rgba8888;
+
+	public SKAlphaType AlphaType { get; init; } = SKAlphaType.Premul;
 }
 
 public record struct Image<TImageDef>(TImageDef ImageDef, byte[] Data);
@@ -18,7 +22,7 @@ public record struct ImageEncodingRules(SKEncodedImageFormat Format, int Quality
 /// <summary>
 /// Base class for conversion from an SVG image
 /// </summary>
-public abstract class SvgConverterBase<TImageDef> : IDisposable where TImageDef : ImageDefBase
+public abstract class SvgConverterBase<TImageDef> : IDisposable where TImageDef : PngImageDefBase
 {
 	private readonly SKSvg _source;
 	private readonly SKPicture _sourcePicture;
@@ -43,7 +47,7 @@ public abstract class SvgConverterBase<TImageDef> : IDisposable where TImageDef 
     {
         var innerImages = new List<Image<TImageDef>>(imageDefs.Count + images.Count);
         foreach (var imageDef in imageDefs)
-			innerImages.Add(new() { ImageDef = imageDef, Data = Rasterize(imageDef.SizeInPixels) });
+			innerImages.Add(new() { ImageDef = imageDef, Data = Rasterize(imageDef.SizeInPixels, imageDef.ColorType, imageDef.AlphaType) });
 
 		if (images.Count > 0)
 			innerImages.AddRange(images);
@@ -53,7 +57,7 @@ public abstract class SvgConverterBase<TImageDef> : IDisposable where TImageDef 
 
 	protected abstract ImageEncodingRules GetImageEncodingRules();
 
-	private byte[] Rasterize(int size)
+	private byte[] Rasterize(int size, SKColorType colorType, SKAlphaType alphaType)
     {
 		var encodingRules = GetImageEncodingRules();
 
@@ -62,7 +66,7 @@ public abstract class SvgConverterBase<TImageDef> : IDisposable where TImageDef 
             throw new InvalidOperationException(
                 "The SVG has no intrinsic size; add a viewBox or an explicit width/height.");
 
-        using var bitmap = new SKBitmap(size, size, SKColorType.Bgra8888, SKAlphaType.Premul);
+        using var bitmap = new SKBitmap(size, size, colorType, alphaType);
         using var canvas = new SKCanvas(bitmap);
         canvas.Clear(SKColors.Transparent);
 
