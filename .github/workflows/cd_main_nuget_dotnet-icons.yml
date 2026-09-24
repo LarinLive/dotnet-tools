@@ -5,6 +5,12 @@ name: cd_main_nuget_dotnet-icons
 on:
   workflow_dispatch
 
+
+# Add permissions here to apply to all jobs in the workflow
+permissions:
+  id-token: write # Required for GitHub OIDC authentication
+  contents: read  # Required for checkout actions (actions/checkout)
+
 jobs:
   build:
     runs-on: ubuntu-latest
